@@ -1,6 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import './Terminal.css'
 import descriptions from '../data/texts'
+import {
+  About,
+  Skill,
+  Project,
+  Contact
+} from "./topics/Index"
 
 const buttons = {
   en: [
@@ -36,13 +42,13 @@ const fs = {
       'notebook-api.txt'
     ],
     '/skills': ['soft.txt', 'hard.txt'],
-    'about.txt': descriptions.en.about,
-    'contact.txt': descriptions.en.contact,
-    '/skills/soft.txt': descriptions.en.skillsSoft,
-    '/skills/hard.txt': descriptions.en.skillsHard,
-    '/projects/clicksign-ruby.txt': descriptions.en.clicksignRuby,
-    '/projects/spotify-card.txt': descriptions.en.spotifyCard,
-    '/projects/notebook-api.txt': descriptions.en.notebookApi,
+    'about.txt': <About lang="en" />,
+    'contact.txt': <Contact lang="en" />,
+    '/skills/soft.txt': <Skill lang="en" type="soft" />,
+    '/skills/hard.txt': <Skill lang="en" type="hard" />,
+    '/projects/clicksign-ruby.txt': <Project lang="en" id="clicksign" />,
+    '/projects/spotify-card.txt': <Project lang="en" id="spotify" />,
+    '/projects/notebook-api.txt': <Project lang="en" id="notebook" />,
   },
   pt: {
     '/': ['sobre.txt', 'habilidades', 'projetos', 'contato.txt'],
