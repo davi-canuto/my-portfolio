@@ -1,30 +1,76 @@
-body {
-  background-color: #1e1e1e;
+/* ─── Base ──────────────────────────────────────────────────────── */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: #0d0d0d;
   color: #d4d4d4;
-  font-family: monospace;
-  padding: 1rem;
+  font-family: 'Courier New', Courier, monospace;
 }
 
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Terminal Container ────────────────────────────────────────── */
 .terminal {
-  max-width: 800px;
+  position: relative;
+  width: 100%;
+  max-width: 900px;
   margin: 0 auto;
-  border: 1px solid #333;
-  padding: 1rem;
-  background-color: #1e1e1e;
+  padding: 1rem 1.2rem;
+  background-color: #0d0d0d;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  box-sizing: border-box;
+  border-left: 1px solid #1a1a1a;
+  border-right: 1px solid #1a1a1a;
 }
 
+/* ─── Top Bar ───────────────────────────────────────────────────── */
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #222;
+}
+
+/* ─── Output ────────────────────────────────────────────────────── */
 .output {
   white-space: pre-wrap;
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+  scrollbar-width: none;
 }
 
+.output::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Input Line ────────────────────────────────────────────────── */
 .input-line {
   display: flex;
   align-items: center;
+  gap: 0.4rem;
 }
 
 .prompt {
   color: #0f0;
-  margin-right: 0.5rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cwd {
+  color: #6af;
 }
 
 input {
@@ -32,33 +78,456 @@ input {
   border: none;
   color: #d4d4d4;
   flex: 1;
-  font-family: monospace;
+  font-family: inherit;
   font-size: 1rem;
   outline: none;
+  caret-color: #0f0;
 }
 
-select {
-  background-color: #1e1e1e;
-  color: #d4d4d4;
-  border: 1px solid #555;
-  margin-bottom: 1rem;
-}
-
-.button-panel {
-  margin-bottom: 1rem;
+/* ─── Status Bar ────────────────────────────────────────────────── */
+.status-bar {
   display: flex;
-  gap: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #222;
+  margin-top: 0.5rem;
+  padding-top: 0.4rem;
+  color: #555;
+  font-size: 0.78rem;
+}
+
+/* ─── Select ────────────────────────────────────────────────────── */
+select {
+  background-color: #0d0d0d;
+  color: #d4d4d4;
+  border: 1px solid #444;
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.1rem 0.3rem;
+  cursor: pointer;
+}
+
+/* ─── Buttons ───────────────────────────────────────────────────── */
+.button-panel {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
 }
 
 .terminal-button {
-  background-color: #333;
-  border: 1px solid #555;
+  background-color: #1a1a1a;
+  border: 1px solid #444;
   color: #d4d4d4;
-  padding: 0.25rem 0.5rem;
+  padding: 0.2rem 0.6rem;
   cursor: pointer;
-  font-family: monospace;
+  font-family: inherit;
+  font-size: 0.82rem;
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .terminal-button:hover {
-  background-color: #444;
+  background-color: #2a2a2a;
+  border-color: #0f0;
+  color: #0f0;
+}
+
+/* ─── Typewriter Cursor ─────────────────────────────────────────── */
+.tw-cursor {
+  display: inline-block;
+  animation: blink 0.7s step-end infinite;
+  color: #0f0;
+  font-size: 0.9em;
+  vertical-align: baseline;
+  margin-left: 1px;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* ─── Boot Sequence ─────────────────────────────────────────────── */
+.boot-sequence {
+  background: #000;
+  color: #0f0;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  padding: 2rem 2rem 1rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  box-sizing: border-box;
+  line-height: 1.6;
+}
+
+.boot-line {
+  animation: fadeIn 0.1s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.boot-sequence.fade-out {
+  animation: fadeOut 0.6s ease forwards;
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; }
+}
+
+.boot-cursor {
+  animation: blink 0.7s step-end infinite;
+  color: #0f0;
+  margin-top: 0.25rem;
+}
+
+/* ─── Rick Roll ─────────────────────────────────────────────────── */
+.rickroll-overlay {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  gap: 0.5rem;
+}
+
+.rickroll-art {
+  color: #d4d4d4;
+  font-size: 0.6rem;
+  line-height: 1.2;
+  white-space: pre;
+  text-align: center;
+}
+
+.rickroll-text {
+  color: #0f0;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  animation: blink 1s step-end infinite;
+}
+
+.rickroll-hint {
+  color: #444;
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* ─── Coffee ─────────────────────────────────────────────────────── */
+.coffee-output {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.coffee-art {
+  color: #c8a96e;
+  white-space: pre;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.coffee-msg {
+  color: #d4d4d4;
+  font-size: 0.88rem;
+}
+
+/* ─── Npm Install ────────────────────────────────────────────────── */
+.npm-output {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.npm-line {
+  color: #d4d4d4;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.npm-line.npm-loading {
+  color: #888;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+/* ─── Hack Overlay ──────────────────────────────────────────────── */
+.hack-overlay {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.hack-header {
+  color: #f00;
+  font-weight: bold;
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  margin-bottom: 1rem;
+  animation: blink 0.6s step-end infinite;
+}
+
+.hack-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  overflow: hidden;
+}
+
+.hack-line {
+  color: #0f0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  animation: fadeIn 0.05s ease forwards;
+}
+
+.hack-cmd {
+  color: #ff0;
+}
+
+.hack-denied {
+  color: #f00;
+  font-weight: bold;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  margin-top: 0.5rem;
+}
+
+.hack-final {
+  color: #aaa;
+  font-style: italic;
+}
+
+/* ─── Matrix ────────────────────────────────────────────────────── */
+.matrix-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  cursor: pointer;
+}
+
+.matrix-overlay canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.matrix-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(0, 255, 0, 0.5);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+/* ─── Neofetch ──────────────────────────────────────────────────── */
+.neofetch {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.7;
+  margin: 0.25rem 0;
+}
+
+.nf-row {
+  display: flex;
+  align-items: baseline;
+}
+
+.nf-art {
+  color: #4af;
+  min-width: 21ch;
+  font-weight: bold;
+  letter-spacing: 0.02em;
+}
+
+.nf-info {
+  color: #d4d4d4;
+  font-size: 0.92rem;
+}
+
+.nf-user {
+  color: #0f0;
+  font-weight: bold;
+}
+
+.nf-key {
+  color: #4af;
+  font-weight: bold;
+}
+
+.nf-sep {
+  color: #444;
+}
+
+/* ─── Fastfetch ─────────────────────────────────────────────────── */
+.fastfetch {
+  margin: 0.25rem 0;
+  line-height: 1.55;
+}
+
+.ff-user-line {
+  font-weight: bold;
+  font-size: 1.05rem;
+  margin-bottom: 0.1rem;
+}
+
+.ff-at {
+  color: #888;
+}
+
+.ff-sep {
+  color: #333;
+  margin-bottom: 0.4rem;
+}
+
+.ff-grid {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.ff-logo-col {
+  flex-shrink: 0;
+}
+
+.ff-logo-line {
+  color: #d4d4d4;
+  font-size: 0.32rem;
+  line-height: 1.35;
+  letter-spacing: 0;
+  white-space: pre;
+}
+
+.ff-info-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.ff-section-title {
+  color: #555;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+.ff-title-text {
+  color: #4af;
+  font-weight: bold;
+}
+
+.ff-row {
+  font-size: 0.88rem;
+  display: flex;
+  align-items: baseline;
+}
+
+.ff-pipe {
+  color: #444;
+}
+
+.ff-colon {
+  color: #666;
+}
+
+.ff-val {
+  color: #d4d4d4;
+}
+
+.ff-blank {
+  height: 0.4rem;
+}
+
+@media (max-width: 600px) {
+  .ff-logo-col {
+    display: none;
+  }
+
+  .ff-grid {
+    gap: 0;
+  }
+}
+
+/* ─── CRT Effect ────────────────────────────────────────────────── */
+.terminal.crt {
+  background-color: #030d03;
+}
+
+.terminal.crt::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.18) 2px,
+    rgba(0, 0, 0, 0.18) 4px
+  );
+  pointer-events: none;
+  z-index: 10;
+  border-radius: inherit;
+}
+
+.terminal.crt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.6) 100%);
+  pointer-events: none;
+  z-index: 11;
+}
+
+.terminal.crt .output,
+.terminal.crt .input-line,
+.terminal.crt .status-bar {
+  text-shadow:
+    0 0 6px rgba(0, 255, 0, 0.7),
+    0 0 12px rgba(0, 255, 0, 0.3);
+}
+
+.terminal.crt input {
+  text-shadow:
+    0 0 6px rgba(0, 255, 0, 0.7),
+    0 0 12px rgba(0, 255, 0, 0.3);
+}
+
+/* ─── Mobile ────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .terminal {
+    padding: 0.75rem;
+    height: 100dvh;
+    border: none;
+  }
+
+  .button-panel {
+    gap: 0.3rem;
+  }
+
+  .terminal-button {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.78rem;
+  }
+
+  .nf-art {
+    display: none;
+  }
+
+  .nf-row {
+    padding-left: 0.5rem;
+  }
 }
