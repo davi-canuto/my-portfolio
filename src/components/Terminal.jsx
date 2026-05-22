@@ -17,7 +17,7 @@ const BOOT_MESSAGES = [
 
 // ─── Available Commands ───────────────────────────────────────────
 const COMMANDS = [
-  'ls', 'cd', 'cat', 'clear', 'help', 'neofetch', 'fastfetch', 'history',
+  'ls', 'cd', 'cat', 'pwd', 'clear', 'help', 'neofetch', 'fastfetch', 'history',
   'whoami', 'uname', 'sudo', 'vim', 'git', 'cowsay',
   'scanlines', 'show', 'matrix',
 ]
@@ -51,7 +51,7 @@ const fs = {
   en: {
     '/': ['projects', 'contact.txt'],
     '/projects': ['titiltei.txt', 'innovajus.txt', 'clicksign-ruby.txt', 'spotify-card.txt'],
-    'contact.txt': <Contact lang="en" />,
+    '/contact.txt': <Contact lang="en" />,
     '/projects/titiltei.txt': <Project lang="en" id="titiltei" />,
     '/projects/innovajus.txt': <Project lang="en" id="innovajus" />,
     '/projects/clicksign-ruby.txt': <Project lang="en" id="clicksign" />,
@@ -60,12 +60,24 @@ const fs = {
   pt: {
     '/': ['projetos', 'contato.txt'],
     '/projetos': ['titiltei.txt', 'innovajus.txt', 'clicksign-ruby.txt', 'spotify-card.txt'],
-    'contato.txt': <Contact lang="pt" />,
+    '/contato.txt': <Contact lang="pt" />,
     '/projetos/titiltei.txt': <Project lang="pt" id="titiltei" />,
     '/projetos/innovajus.txt': <Project lang="pt" id="innovajus" />,
     '/projetos/clicksign-ruby.txt': <Project lang="pt" id="clicksign" />,
     '/projetos/spotify-card.txt': <Project lang="pt" id="spotify" />,
   },
+}
+
+function resolvePath(cwd, target) {
+  if (target.startsWith('/')) return target
+  const base = cwd === '/' ? '' : cwd
+  const segments = `${base}/${target}`.split('/').filter(Boolean)
+  const stack = []
+  for (const seg of segments) {
+    if (seg === '..') stack.pop()
+    else if (seg !== '.') stack.push(seg)
+  }
+  return stack.length === 0 ? '/' : '/' + stack.join('/')
 }
 
 // ─── Typewriter Line ──────────────────────────────────────────────
@@ -83,8 +95,12 @@ function TypewriterLine({ content }) {
     let i = 0
     const timer = setInterval(() => {
       i++
-      setDisplayed(content.slice(0, i))
-      if (i >= content.length) clearInterval(timer)
+      if (i >= content.length) {
+        clearInterval(timer)
+        setDisplayed(null)
+      } else {
+        setDisplayed(content.slice(0, i))
+      }
     }, 10)
     return () => clearInterval(timer)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -568,35 +584,54 @@ export default function Terminal() {
     const currentFS = fs[lang]
 
     switch (base) {
-      case 'ls':
-        print((currentFS[cwd] || []).join('  '))
+      case 'ls': {
+        const lsPath = args[0] ? resolvePath(cwd, args[0]) : cwd
+        const lsResult = currentFS[lsPath]
+        if (Array.isArray(lsResult)) {
+          print(
+            <span>
+              {lsResult.map((name, i) => {
+                const child = lsPath === '/' ? `/${name}` : `${lsPath}/${name}`
+                const isDir = Array.isArray(currentFS[child])
+                return (
+                  <span key={name}>
+                    {i > 0 && '  '}
+                    {isDir ? <span style={{ color: '#4af' }}>{name}/</span> : name}
+                  </span>
+                )
+              })}
+            </span>
+          )
+        } else if (args[0]) {
+          print(lang === 'en' ? `ls: ${args[0]}: No such directory` : `ls: ${args[0]}: Diretório não encontrado`)
+        }
         break
+      }
 
-      case 'cd':
+      case 'cd': {
         if (args.length === 0) {
           setCwd('/')
-        } else if (args[0] === '..') {
-          if (cwd !== '/') {
-            const p = cwd.split('/')
-            p.pop()
-            setCwd(p.length === 1 ? '/' : p.join('/'))
-          }
-        } else if (args[0] !== '.') {
-          const target = cwd === '/' ? `/${args[0]}` : `${cwd}/${args[0]}`
-          if (currentFS[target]) {
+        } else {
+          const target = resolvePath(cwd, args[0])
+          if (target === cwd && args[0] === '.') break
+          if (Array.isArray(currentFS[target])) {
             setCwd(target)
+          } else if (currentFS[target] !== undefined) {
+            print(lang === 'en' ? `cd: ${args[0]}: Not a directory` : `cd: ${args[0]}: Não é um diretório`)
           } else {
             print(lang === 'en' ? `cd: ${args[0]}: No such directory` : `cd: ${args[0]}: Diretório não encontrado`)
           }
         }
         break
+      }
 
       case 'cat': {
         const target = args[0]
         if (!target) { print(lang === 'en' ? 'cat: missing file name' : 'cat: nome do arquivo ausente'); break }
-        const path = cwd === '/' ? target : `${cwd}/${target}`
+        const path = resolvePath(cwd, target)
         const content = currentFS[path]
-        if (content !== undefined) print(content)
+        if (Array.isArray(content)) print(lang === 'en' ? `cat: ${target}: Is a directory` : `cat: ${target}: É um diretório`)
+        else if (content !== undefined) print(content)
         else print(lang === 'en' ? `cat: ${target}: No such file` : `cat: ${target}: Arquivo não encontrado`)
         break
       }
@@ -626,6 +661,10 @@ export default function Terminal() {
         } else {
           print(history.map((h, i) => `  ${String(i + 1).padStart(3)}  ${h}`).join('\n'))
         }
+        break
+
+      case 'pwd':
+        print(cwd)
         break
 
       case 'whoami':
@@ -936,7 +975,7 @@ export default function Terminal() {
   return (
     <div
       className={`terminal${crtEnabled ? ' crt' : ''}`}
-      onClick={() => inputRef.current?.focus()}
+      onClick={() => { if (!window.getSelection()?.toString()) inputRef.current?.focus() }}
     >
       {matrixActive && (
         <MatrixRain onExit={() => {
