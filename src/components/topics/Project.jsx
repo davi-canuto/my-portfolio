@@ -43,7 +43,7 @@ const projects = {
       url: 'https://rubygems.org/gems/clicksign_ruby',
       role: 'Author',
       stack: ['Ruby', 'RubyGems'],
-      desc: 'Fork of the deprecated official Clicksign gem, published on RubyGems. Actively maintained with 1400+ downloads.',
+      desc: 'The official Clicksign gem was abandoned by the company, leaving the Ruby community without support. I revived it, published it on RubyGems, and kept it maintained — now with 14,000+ downloads.',
       status: 'open source',
     },
     pt: {
@@ -51,7 +51,7 @@ const projects = {
       url: 'https://rubygems.org/gems/clicksign_ruby',
       role: 'Autor',
       stack: ['Ruby', 'RubyGems'],
-      desc: 'Fork da gem oficial do Clicksign descontinuada, publicada no RubyGems. Mantida ativamente com mais de 1400 downloads.',
+      desc: 'A gem oficial do Clicksign foi abandonada pela empresa, deixando a comunidade Ruby sem suporte. Eu a trouxe de volta à vida, publiquei no RubyGems e mantenho ativa — com mais de 14.000 downloads.',
       status: 'open source',
     },
   },
