@@ -91,6 +91,24 @@ const projects = {
       status: 'open source',
     },
   },
+  harnessAdmin: {
+    en: {
+      name: 'harness-admin',
+      url: 'https://github.com/davi-canuto/harness-admin',
+      role: 'Author',
+      stack: ['TypeScript', 'Node.js', 'React', 'Fastify', 'Ink', 'pnpm'],
+      desc: 'Local dashboard for Specification-Driven Development projects. Reads a filesystem-based spec structure and provides real-time visual tracking of changes and task progress — via browser SPA (React + Tailwind) or keyboard-driven terminal UI (Ink).',
+      status: 'open source',
+    },
+    pt: {
+      name: 'harness-admin',
+      url: 'https://github.com/davi-canuto/harness-admin',
+      role: 'Autor',
+      stack: ['TypeScript', 'Node.js', 'React', 'Fastify', 'Ink', 'pnpm'],
+      desc: 'Dashboard local para projetos com Desenvolvimento Orientado a Especificações (SDD). Lê uma estrutura de specs no sistema de arquivos e exibe em tempo real o status e progresso das tarefas — via SPA no navegador (React + Tailwind) ou interface no terminal com teclado (Ink).',
+      status: 'open source',
+    },
+  },
 }
 
 const statusColor = {

@@ -30,6 +30,7 @@ const buttons = {
         'cat /projects/innovajus.txt',
         'cat /projects/clicksign-ruby.txt',
         'cat /projects/spotify-card.txt',
+        'cat /projects/harness-admin.txt',
       ] },
     { label: 'Contact', cmds: ['cat contact.txt'] },
     { label: 'Clear', cmds: ['clear'] },
@@ -40,6 +41,7 @@ const buttons = {
         'cat /projetos/innovajus.txt',
         'cat /projetos/clicksign-ruby.txt',
         'cat /projetos/spotify-card.txt',
+        'cat /projetos/harness-admin.txt',
       ] },
     { label: 'Contato', cmds: ['cat contato.txt'] },
     { label: 'Limpar', cmds: ['clear'] },
@@ -50,21 +52,23 @@ const buttons = {
 const fs = {
   en: {
     '/': ['projects', 'contact.txt'],
-    '/projects': ['titiltei.txt', 'innovajus.txt', 'clicksign-ruby.txt', 'spotify-card.txt'],
+    '/projects': ['titiltei.txt', 'innovajus.txt', 'clicksign-ruby.txt', 'spotify-card.txt', 'harness-admin.txt'],
     '/contact.txt': <Contact lang="en" />,
     '/projects/titiltei.txt': <Project lang="en" id="titiltei" />,
     '/projects/innovajus.txt': <Project lang="en" id="innovajus" />,
     '/projects/clicksign-ruby.txt': <Project lang="en" id="clicksign" />,
     '/projects/spotify-card.txt': <Project lang="en" id="spotify" />,
+    '/projects/harness-admin.txt': <Project lang="en" id="harnessAdmin" />,
   },
   pt: {
     '/': ['projetos', 'contato.txt'],
-    '/projetos': ['titiltei.txt', 'innovajus.txt', 'clicksign-ruby.txt', 'spotify-card.txt'],
+    '/projetos': ['titiltei.txt', 'innovajus.txt', 'clicksign-ruby.txt', 'spotify-card.txt', 'harness-admin.txt'],
     '/contato.txt': <Contact lang="pt" />,
     '/projetos/titiltei.txt': <Project lang="pt" id="titiltei" />,
     '/projetos/innovajus.txt': <Project lang="pt" id="innovajus" />,
     '/projetos/clicksign-ruby.txt': <Project lang="pt" id="clicksign" />,
     '/projetos/spotify-card.txt': <Project lang="pt" id="spotify" />,
+    '/projetos/harness-admin.txt': <Project lang="pt" id="harnessAdmin" />,
   },
 }
 
@@ -208,7 +212,7 @@ function NeofetchOutput({ lang }) {
     <><span className="nf-key">Host</span>: davi-canuto</>,
     <><span className="nf-key">Shell</span>: bash 5.2.0</>,
     <><span className="nf-key">Languages</span>: Ruby, JS, SQL</>,
-    <><span className="nf-key">Projects</span>: 3 &nbsp;<span className="nf-key">Uptime</span>: 2+ yrs</>,
+    <><span className="nf-key">Projects</span>: 4 &nbsp;<span className="nf-key">Uptime</span>: 2+ yrs</>,
   ]
 
   const pt = [
@@ -218,7 +222,7 @@ function NeofetchOutput({ lang }) {
     <><span className="nf-key">Host</span>: davi-canuto</>,
     <><span className="nf-key">Shell</span>: bash 5.2.0</>,
     <><span className="nf-key">Linguagens</span>: Ruby, JS, SQL</>,
-    <><span className="nf-key">Projetos</span>: 3 &nbsp;<span className="nf-key">Uptime</span>: 2+ anos</>,
+    <><span className="nf-key">Projetos</span>: 4 &nbsp;<span className="nf-key">Uptime</span>: 2+ anos</>,
   ]
 
   const info = lang === 'en' ? en : pt
@@ -295,7 +299,7 @@ function FastfetchOutput({ lang }) {
     me: [
       { key: 'Name',     val: 'Davi Canuto' },
       { key: 'Role',     val: 'Software Developer' },
-      { key: 'Stack',    val: 'Ruby · Rails · JS · SQL' },
+      { key: 'Stack',    val: 'Ruby · Rails · JS · TS · SQL' },
       { key: 'Location', val: 'Natal-RN, Brazil 🇧🇷' },
       { key: 'Contact',  val: 'davicanutogregorio@gmail.com' },
     ],
@@ -306,7 +310,7 @@ function FastfetchOutput({ lang }) {
     me: [
       { key: 'Nome',       val: 'Davi Canuto' },
       { key: 'Cargo',      val: 'Desenvolvedor de Software' },
-      { key: 'Stack',      val: 'Ruby · Rails · JS · SQL' },
+      { key: 'Stack',      val: 'Ruby · Rails · JS · TS · SQL' },
       { key: 'Localidade', val: 'Natal-RN, Brasil 🇧🇷' },
       { key: 'Contato',    val: 'davicanutogregorio@gmail.com' },
     ],
@@ -704,7 +708,11 @@ export default function Terminal() {
       case 'git':
         if (args[0] === 'log') {
           print(
-            'commit a3f1c2d (HEAD -> main, origin/main)\n' +
+            'commit f9e2a1b (HEAD -> main, origin/main)\n' +
+            'Author: Davi Canuto <davicanutogregorio@gmail.com>\n' +
+            'Date:   2025\n\n' +
+            '    feat: built harness-admin — SDD dashboard (TypeScript monorepo)\n\n' +
+            'commit a3f1c2d\n' +
             'Author: Davi Canuto <davicanutogregorio@gmail.com>\n' +
             'Date:   2024 – present\n\n' +
             '    feat: backend developer at Tootz Soluções\n\n' +
